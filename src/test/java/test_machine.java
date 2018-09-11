@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class test_machine {
     @Test
     public void test_1(){
