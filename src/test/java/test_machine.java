@@ -1,15 +1,24 @@
 import org.junit.Test;
 
+import java.util.Scanner;
+
 public class test_machine {
+    @Test
+    public void test_0(){
+        Scanner scan = new Scanner(System.in);
+        String number = scan.nextLine();
+        System.out.println ("Вы ввели число " + number);
+    }
+
     @Test
     public void test_1(){
         int[] tmp = new int[2];
         tmp[0] = 1;
         tmp[1] = 2;
-        int sum = 4;
-        CashExchange Bank = new CashExchange(tmp, sum);
-        Bank.CalcResults();
-        Bank.PrintRes();
+        int sum = 10000;
+        CashExchange bank = new CashExchange(tmp, sum);
+        bank.CalcResults();
+        bank.PrintRes();
     }
 
     @Test
@@ -19,9 +28,9 @@ public class test_machine {
         tmp[1] = 4;
         tmp[2] = 7;
         int sum = 17;
-        CashExchange Bank = new CashExchange(tmp, sum);
-        Bank.CalcResults();
-        Bank.PrintRes();
+        CashExchange bank = new CashExchange(tmp, sum);
+        bank.CalcResults();
+        bank.PrintRes();
     }
 
     @Test
@@ -32,9 +41,9 @@ public class test_machine {
         tmp[2] = 10;
         tmp[3] = 22;
         int sum = 28;
-        CashExchange Bank = new CashExchange(tmp, sum);
-        Bank.CalcResults();
-        Bank.PrintRes();
+        CashExchange bank = new CashExchange(tmp, sum);
+        bank.CalcResults();
+        bank.PrintRes();
     }
 
 }

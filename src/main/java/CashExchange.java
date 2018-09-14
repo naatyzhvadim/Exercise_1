@@ -5,84 +5,75 @@ import java.util.Iterator;
 
 public class CashExchange {
 
-    private int[] Notes;
-    private int NumNotes;
-    private int ReqSum;
-    private HashSet<ArrayList>[] Results;
+    private int[] notes;
+    private int num_notes;
+    private int req_sum;
+    private HashSet<ArrayList>[] results;
 
     CashExchange(int[] tmp, int sum){
-        Notes = tmp;
-        Arrays.sort(Notes);
-        NumNotes = Notes.length;
-        ReqSum = sum;
-        Results = new HashSet[ReqSum + 1];
+        Arrays.sort(tmp);
+        for (int i = 0; i < tmp.length; ++i){
+            if (tmp[i] > 0)
+                break;
+        }
+        notes = tmp;
+        num_notes = notes.length;
+        req_sum = sum;
+        results = new HashSet[req_sum + 1];
     }
 
-    public void PrintRes(){
-        for(int k = 0; k <= ReqSum; ++k) {
+    CashExchange(){
+        req_sum = 0;
+    }
 
-            if (Results[k] == null)
-                continue;
-            System.out.println("There are " + Results[k].size() + " combos for sum = " + k);
-            Iterator<ArrayList> iterator = Results[k].iterator();
-            while (iterator.hasNext()) {
-                ArrayList<Integer> ArL = iterator.next();
-                /*System.out.println("IN HASH ");
-                for (int i = 0; i < ArL.size(); ++i){
-                    System.out.print(ArL.get(i) + " ");
-                }*/
-                //System.out.println("\nACtual ");
-                for (int i = 0; i < ArL.size(); ++i)
-                    for (int j = 0; j < ArL.get(i); ++j)
-                        System.out.print(Notes[i] + " ");
-                System.out.println();
-            }
+    public void PrintRes() {
+        //for(int k = 0; k <= ReqSum; ++k) {
+        int k = req_sum;
+        Iterator<ArrayList> iterator = results[k].iterator();
+        while (iterator.hasNext()) {
+            ArrayList<Integer> ArL = iterator.next();
+            for (int i = 0; i < ArL.size(); ++i)
+                for (int j = 0; j < ArL.get(i); ++j)
+                    System.out.print(notes[i] + " ");
+            System.out.println();
         }
+        //}
     }
 
     public void CalcResults(){
-        ArrayList<Integer> Pattern = new ArrayList<>();
-        for (int i = 0; i < NumNotes; ++i)
-            Pattern.add(0);
-        //System.out.println("LOOOOL   " + NumNotes);
-        for (int i = 0; i < NumNotes; ++i){
-            if (Notes[i] < ReqSum) {
-                int k = Notes[i];
-                //Results[k] = new HashSet<>();
-                //int[] tmp = new int[NumNotes];
-                //tmp[i] = 1;
-                Results[k] = new HashSet<>();
-                ArrayList<Integer> X = new ArrayList<>(Pattern);
-                //X.addAll(Pattern);
-                X.set(i, 1);
-                Results[k].add(X);
-                //Results[k].add(tmp.clone());
-                //System.out.println("HEY");
+        ArrayList<Integer> pattern = new ArrayList<>();
+        for (int i = 0; i < num_notes; ++i)
+            pattern.add(0);
+        for (int i = 0; i < num_notes; ++i){
+            if (notes[i] < req_sum) {
+                int k = notes[i];
+                results[k] = new HashSet<>();
+                ArrayList<Integer> cur_list = new ArrayList<>(pattern);
+                cur_list.set(i, 1);
+                results[k].add(cur_list);
             }
         }
 
-        if (Notes[NumNotes - 1] + Notes[0] > ReqSum){
-            //System.out.println("OOPS");
+        if (notes[num_notes - 1] + notes[0] > req_sum){
             return;
         }
 
-        for (int CurSum = Notes[0] + Notes[0]; CurSum <= ReqSum; ++CurSum) {
-            for (int j = 0; j < NumNotes; ++j) {
-                if (CurSum - Notes[j] >= 0) {
-                    if (Results[CurSum - Notes[j]] != null) {
-                        //System.out.println("OOOOOOPPPP");
-                        if (Results[CurSum] == null)
-                            Results[CurSum] = new HashSet<>();
-                        Iterator<ArrayList> iterator = Results[CurSum - Notes[j]].iterator();
+        for (int cur_sum = notes[0] + notes[0]; cur_sum <= req_sum; ++cur_sum) {
+            if (cur_sum % 1000 == 0)
+                System.out.println(cur_sum);
+            for (int j = 0; j < num_notes; ++j) {
+                if (cur_sum - notes[j] >= 0) {
+                    if (results[cur_sum - notes[j]] != null) {
+                        if (results[cur_sum] == null)
+                            results[cur_sum] = new HashSet<>();
+                        Iterator<ArrayList> iterator = results[cur_sum - notes[j]].iterator();
                         while (iterator.hasNext()) {
                             ArrayList<Integer> ArL = new ArrayList<Integer>(iterator.next());
-                            //++arr[j];
                             ArL.set(j, ArL.get(j) + 1);
-                            Results[CurSum].add(ArL);
-                            //System.out.println("ADDED ");
-                            //for (int i = 0; i < arr.length; ++i)
-                            //    System.out.print(arr[i] + " ");
-                            //System.out.println();
+                            results[cur_sum].add(ArL);
+                        }
+                        if (j == num_notes - 1){
+                            results[cur_sum - notes[j]] = null;
                         }
                     }
                 } else
@@ -90,5 +81,6 @@ public class CashExchange {
             }
         }
     }
-}
 
+
+}
